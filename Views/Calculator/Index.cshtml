@@ -1,0 +1,115 @@
+﻿@model AromaDom.Models.ViewModels.CalculatorViewModel
+@{
+    ViewBag.Title = "Расчёт продукции из сырья — Арома Дом";
+}
+
+<div class="aroma-section">
+    <a href="@Url.Action("Index", "Materials")" class="aroma-link aroma-link--back">← Назад к списку</a>
+    <h2 class="aroma-section__title">Расчёт количества продукции из сырья</h2>
+    <p class="aroma-section__subtitle">
+        Метод <code>CalculateProductQuantity</code> рассчитывает целое количество продукции из
+        заданного количества сырья с учётом коэффициента типа продукции и процента потери сырья.
+    </p>
+
+    <div class="aroma-form">
+        @using (Html.BeginForm("Index", "Calculator", FormMethod.Post, new { @class = "aroma-form__form" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "aroma-form__errors" })
+
+            <div class="aroma-form__grid">
+                <div class="aroma-field">
+                    <label class="aroma-field__label">@Html.LabelFor(m => m.ProductTypeId) <span class="aroma-req">*</span></label>
+                    <select id="ProductTypeId" name="ProductTypeId" class="aroma-select">
+                        <option value="">Выберите...</option>
+                        @foreach (var t in Model.ProductTypes)
+                        {
+                            <option value="@t.Id" @(Model.ProductTypeId == t.Id ? "selected" : "")>
+                                @t.Name (коэф. @t.TypeCoefficient.ToString("0.###"))
+                            </option>
+                        }
+                    </select>
+                    @Html.ValidationMessageFor(m => m.ProductTypeId, "", new { @class = "aroma-field__error" })
+                </div>
+
+                <div class="aroma-field">
+                    <label class="aroma-field__label">@Html.LabelFor(m => m.MaterialTypeId) <span class="aroma-req">*</span></label>
+                    <select id="MaterialTypeId" name="MaterialTypeId" class="aroma-select">
+                        <option value="">Выберите...</option>
+                        @foreach (var t in Model.MaterialTypes)
+                        {
+                            <option value="@t.Id" @(Model.MaterialTypeId == t.Id ? "selected" : "")>
+                                @t.Name (потери @(t.LossPercentage * 100).ToString("0.00")%)
+                            </option>
+                        }
+                    </select>
+                    @Html.ValidationMessageFor(m => m.MaterialTypeId, "", new { @class = "aroma-field__error" })
+                </div>
+
+                <div class="aroma-field">
+                    <label class="aroma-field__label">@Html.LabelFor(m => m.RawQuantity) <span class="aroma-req">*</span></label>
+                    @Html.TextBoxFor(m => m.RawQuantity, new { @class = "aroma-input", type = "number", min = "1", step = "1", placeholder = "Например, 100" })
+                    @Html.ValidationMessageFor(m => m.RawQuantity, "", new { @class = "aroma-field__error" })
+                </div>
+
+                <div class="aroma-field">
+                    <label class="aroma-field__label">@Html.LabelFor(m => m.Parameter1) <span class="aroma-req">*</span></label>
+                    @Html.TextBoxFor(m => m.Parameter1, new { @class = "aroma-input", type = "number", step = "0.001", min = "0.001", placeholder = "Например, 7.0" })
+                    @Html.ValidationMessageFor(m => m.Parameter1, "", new { @class = "aroma-field__error" })
+                </div>
+
+                <div class="aroma-field">
+                    <label class="aroma-field__label">@Html.LabelFor(m => m.Parameter2) <span class="aroma-req">*</span></label>
+                    @Html.TextBoxFor(m => m.Parameter2, new { @class = "aroma-input", type = "number", step = "0.001", min = "0.001", placeholder = "Например, 10.0" })
+                    @Html.ValidationMessageFor(m => m.Parameter2, "", new { @class = "aroma-field__error" })
+                </div>
+            </div>
+
+            <div class="aroma-form__actions">
+                <button type="submit" class="aroma-btn aroma-btn--primary">Рассчитать</button>
+            </div>
+        }
+
+        @if (Model.Result.HasValue)
+        {
+            <div class="aroma-calc-result @(Model.Result == -1 ? "aroma-calc-result--error" : "")">
+                <div class="aroma-calc-result__header">
+                    <span class="aroma-calc-result__label">Результат метода:</span>
+                    <span class="aroma-calc-result__value">@Model.Result</span>
+                </div>
+                @if (Model.Result == -1)
+                {
+                    <p class="aroma-calc-result__message">@Model.ResultMessage</p>
+                }
+                else
+                {
+                    <p class="aroma-calc-result__message">@Model.ResultMessage</p>
+                    <div class="aroma-calc-result__details">
+                        <div>
+                            <span>Коэффициент типа:</span>
+                            <span>@(Model.TypeCoefficient.HasValue ? Model.TypeCoefficient.Value.ToString("0.###") : "-")</span>
+                        </div>
+                        <div>
+                            <span>Процент потерь:</span>
+                            <span>@(Model.LossPercentage.HasValue ? (Model.LossPercentage.Value * 100).ToString("0.00") : "-")%</span>
+                        </div>
+                        <div>
+                            <span>Сырьё на 1 ед.:</span>
+                            <span>@(Model.RequiredPerUnit.HasValue ? Model.RequiredPerUnit.Value.ToString("0.####") : "-")</span>
+                        </div>
+                        <div>
+                            <span>Полезное сырьё:</span>
+                            <span>@(Model.UsableMaterial.HasValue ? Model.UsableMaterial.Value.ToString("0.####") : "-")</span>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/4.0.0/jquery.validate.unobtrusive.min.js"></script>
+}

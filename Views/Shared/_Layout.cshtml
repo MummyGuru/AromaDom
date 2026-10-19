@@ -1,0 +1,80 @@
+﻿@{
+    var title = ViewBag.Title ?? "Арома Дом — Учёт материалов";
+}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@title</title>
+    <link href="~/favicon.ico" rel="icon" type="image/x-icon" />
+    <link href="~/Content/Site.css" rel="stylesheet" />
+    <link href="~/Content/aromadom.css" rel="stylesheet" />
+</head>
+<body>
+    <header class="aroma-header">
+        <div class="aroma-header__inner">
+            <a href="@Url.Action("Index", "Materials")" class="aroma-header__logo">
+                <img src="~/Content/images/logo.svg" alt="Логотип Арома Дом" class="aroma-logo" />
+            </a>
+            <nav class="aroma-nav">
+                <a href="@Url.Action("Index", "Materials")" class="aroma-nav__link">Главная</a>
+                <a href="@Url.Action("Create", "Materials")" class="aroma-nav__link">Добавить материал</a>
+                <a href="@Url.Action("Index", "Calculator")" class="aroma-nav__link aroma-nav__link--sage">Расчёт продукции</a>
+            </nav>
+        </div>
+        <div class="aroma-header__bar">
+            <span class="aroma-header__bar-main">Арома Дом — Учёт материалов</span>
+            <span class="aroma-header__bar-meta">Подсистема учёта сырья и материалов</span>
+        </div>
+    </header>
+
+    <main class="aroma-main">
+        @* Сообщения об успехе/ошибке *@
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="aroma-toast aroma-toast--success" role="alert">
+                <span class="aroma-toast__title">Успешно</span>
+                <span class="aroma-toast__text">@TempData["SuccessMessage"]</span>
+                <button type="button" class="aroma-toast__close" aria-label="Закрыть">×</button>
+            </div>
+        }
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="aroma-toast aroma-toast--error" role="alert">
+                <span class="aroma-toast__title">Ошибка</span>
+                <span class="aroma-toast__text">@TempData["ErrorMessage"]</span>
+                <button type="button" class="aroma-toast__close" aria-label="Закрыть">×</button>
+            </div>
+        }
+        @if (TempData["WarningMessage"] != null)
+        {
+            <div class="aroma-toast aroma-toast--warning" role="alert">
+                <span class="aroma-toast__title">Предупреждение</span>
+                <span class="aroma-toast__text">@TempData["WarningMessage"]</span>
+                <button type="button" class="aroma-toast__close" aria-label="Закрыть">×</button>
+            </div>
+        }
+
+        @RenderBody()
+    </main>
+
+    <footer class="aroma-footer">
+        <div class="aroma-footer__inner">
+            «Арома Дом» · Подсистема учёта материалов
+        </div>
+    </footer>
+
+    <script>
+        // Простой закрыватель toast-уведомлений.
+        document.addEventListener('click', function (e) {
+            if (e.target.classList && e.target.classList.contains('aroma-toast__close')) {
+                e.target.closest('.aroma-toast').style.display = 'none';
+            }
+        });
+    </script>
+
+    @* Секция для дополнительных скриптов, которые страницы могут добавить через @section Scripts { ... } *@
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,51 @@
+﻿@model AromaDom.Models.Entities.Material
+@{
+    ViewBag.Title = "Удаление материала — Арома Дом";
+    var linked = (int)ViewBag.LinkedProductsCount;
+}
+
+<div class="aroma-section">
+    <div class="aroma-form">
+        <a href="@Url.Action("Index", "Materials")" class="aroma-link aroma-link--back">← Назад к списку</a>
+        <h2 class="aroma-form__title aroma-form__title--danger">Удаление материала</h2>
+
+        <div class="aroma-warning">
+            <p>
+                Вы действительно хотите удалить материал <strong>«@Model.Name»</strong>?
+                Это действие нельзя отменить.
+            </p>
+            @if (linked > 0)
+            {
+                <p class="aroma-warning__danger">
+                    Внимание: этот материал используется в <strong>@linked</strong> рецептуре(ах) продукции.
+                    Удаление невозможно, пока существуют связи в таблице <code>product_recipe</code>.
+                </p>
+            }
+        </div>
+
+        <div class="aroma-card__body" style="max-width: 600px;">
+            <div class="aroma-card__row">
+                <span class="aroma-card__row-label">Тип:</span>
+                <span class="aroma-card__row-value">@Model.MaterialTypeName</span>
+            </div>
+            <div class="aroma-card__row">
+                <span class="aroma-card__row-label">Количество на складе:</span>
+                <span class="aroma-card__row-value">@Model.StockQuantity.ToString("0.###") @Model.MeasurementUnitShortName</span>
+            </div>
+            <div class="aroma-card__row">
+                <span class="aroma-card__row-label">Минимальное количество:</span>
+                <span class="aroma-card__row-value">@Model.MinStockQuantity.ToString("0.###") @Model.MeasurementUnitShortName</span>
+            </div>
+        </div>
+
+        @using (Html.BeginForm("Delete", "Materials", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            @Html.Hidden("id", Model.Id)
+            <div class="aroma-form__actions">
+                <a href="@Url.Action("Index", "Materials")" class="aroma-btn aroma-btn--secondary">Отмена</a>
+                <button type="submit" class="aroma-btn aroma-btn--danger" @(linked > 0 ? "disabled" : "")>Удалить</button>
+            </div>
+        }
+    </div>
+</div>

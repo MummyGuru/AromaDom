@@ -1,0 +1,111 @@
+@model AromaDom.Models.ViewModels.MaterialEditViewModel
+@{
+    ViewBag.Title = Model.Id == 0 ? "Добавление материала — Арома Дом" : "Редактирование материала — Арома Дом";
+    var isEdit = Model.Id != 0;
+}
+
+<div class="aroma-section">
+    <div class="aroma-form">
+        <a href="@Url.Action("Index", "Materials")" class="aroma-link aroma-link--back">← Назад к списку</a>
+        <h2 class="aroma-form__title">@(isEdit ? "Редактирование материала" : "Добавление материала")</h2>
+        <p class="aroma-form__subtitle">
+            @if (isEdit)
+            {
+                <span>Редактирование материала. Все поля подгружены из базы данных.</span>
+            }
+            else
+            {
+                <span>Заполните все обязательные поля. Поля со звёздочкой (*) обязательны.</span>
+            }
+        </p>
+
+        @using (Html.BeginForm(isEdit ? "Edit" : "Create", "Materials", FormMethod.Post, new { @class = "aroma-form__form" }))
+        {
+            @Html.AntiForgeryToken()
+            if (isEdit)
+            {
+                @Html.HiddenFor(m => m.Id)
+            }
+
+            @* Сводка ошибок валидации *@
+            @Html.ValidationSummary(true, "", new { @class = "aroma-form__errors" })
+
+            <div class="aroma-form__grid">
+                <div class="aroma-field aroma-field--full">
+                    <label class="aroma-field__label">@Html.LabelFor(m => m.MaterialTypeId) <span class="aroma-req">*</span></label>
+                    <select id="MaterialTypeId" name="MaterialTypeId" class="aroma-select">
+                        <option value="">Выберите тип материала...</option>
+                        @foreach (var t in Model.MaterialTypes)
+                        {
+                            <option value="@t.Id" @(Model.MaterialTypeId == t.Id ? "selected" : "")>
+                                @t.Name (потери @(t.LossPercentage * 100).ToString("0.00")%)
+                            </option>
+                        }
+                    </select>
+                    @Html.ValidationMessageFor(m => m.MaterialTypeId, "", new { @class = "aroma-field__error" })
+                </div>
+
+                <div class="aroma-field aroma-field--full">
+                    <label class="aroma-field__label">@Html.LabelFor(m => m.Name) <span class="aroma-req">*</span></label>
+                    @Html.TextBoxFor(m => m.Name, new { @class = "aroma-input", placeholder = "Например, Соевый воск премиум", maxlength = "200" })
+                    @Html.ValidationMessageFor(m => m.Name, "", new { @class = "aroma-field__error" })
+                </div>
+
+                <div class="aroma-field">
+                    <label class="aroma-field__label">@Html.LabelFor(m => m.Cost) <span class="aroma-req">*</span></label>
+                    @Html.TextBoxFor(m => m.Cost, new { @class = "aroma-input", type = "number", step = "0.01", min = "0", placeholder = "0.00" })
+                    @Html.ValidationMessageFor(m => m.Cost, "", new { @class = "aroma-field__error" })
+                </div>
+
+                <div class="aroma-field">
+                    <label class="aroma-field__label">@Html.LabelFor(m => m.MeasurementUnitId) <span class="aroma-req">*</span></label>
+                    <select id="MeasurementUnitId" name="MeasurementUnitId" class="aroma-select">
+                        <option value="">Выберите...</option>
+                        @foreach (var u in Model.MeasurementUnits)
+                        {
+                            <option value="@u.Id" @(Model.MeasurementUnitId == u.Id ? "selected" : "")>@u.ShortName — @u.FullName</option>
+                        }
+                    </select>
+                    @Html.ValidationMessageFor(m => m.MeasurementUnitId, "", new { @class = "aroma-field__error" })
+                </div>
+
+                <div class="aroma-field">
+                    <label class="aroma-field__label">@Html.LabelFor(m => m.QuantityPerPackage) <span class="aroma-req">*</span></label>
+                    @Html.TextBoxFor(m => m.QuantityPerPackage, new { @class = "aroma-input", type = "number", step = "0.001", min = "0.001", placeholder = "0.000" })
+                    @Html.ValidationMessageFor(m => m.QuantityPerPackage, "", new { @class = "aroma-field__error" })
+                </div>
+
+                <div class="aroma-field">
+                    <label class="aroma-field__label">@Html.LabelFor(m => m.StockQuantity) <span class="aroma-req">*</span></label>
+                    @Html.TextBoxFor(m => m.StockQuantity, new { @class = "aroma-input", type = "number", step = "0.001", min = "0", placeholder = "0.000" })
+                    @Html.ValidationMessageFor(m => m.StockQuantity, "", new { @class = "aroma-field__error" })
+                </div>
+
+                <div class="aroma-field">
+                    <label class="aroma-field__label">@Html.LabelFor(m => m.MinStockQuantity) <span class="aroma-req">*</span></label>
+                    @Html.TextBoxFor(m => m.MinStockQuantity, new { @class = "aroma-input", type = "number", step = "0.001", min = "0", placeholder = "0.000" })
+                    @Html.ValidationMessageFor(m => m.MinStockQuantity, "", new { @class = "aroma-field__error" })
+                </div>
+
+                <div class="aroma-field aroma-field--full">
+                    <label class="aroma-field__label">@Html.LabelFor(m => m.Description)</label>
+                    @Html.TextAreaFor(m => m.Description, new { @class = "aroma-input", rows = "2", maxlength = "200", placeholder = "Необязательное описание" })
+                </div>
+            </div>
+
+            <div class="aroma-form__actions">
+                <a href="@Url.Action("Index", "Materials")" class="aroma-btn aroma-btn--secondary">Отмена</a>
+                <button type="submit" class="aroma-btn aroma-btn--primary">
+                    @(isEdit ? "Сохранить изменения" : "Добавить материал")
+                </button>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    @* Подключение jQuery и unobtrusive validation (через CDN, без локальных файлов) *@
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/4.0.0/jquery.validate.unobtrusive.min.js"></script>
+}

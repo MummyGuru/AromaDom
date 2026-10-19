@@ -1,0 +1,56 @@
+﻿@model AromaDom.Models.ViewModels.ProductListViewModel
+@{
+    ViewBag.Title = "Продукция по материалу — Арома Дом";
+}
+
+<div class="aroma-section">
+    <a href="@Url.Action("Index", "Materials")" class="aroma-link aroma-link--back">← Назад к списку</a>
+    <h2 class="aroma-section__title">Продукция, в рецептуре которой используется материал</h2>
+    <p class="aroma-section__subtitle">
+        Материал: <strong>«@Model.MaterialName»</strong> (тип: @Model.MaterialTypeName).
+        Требуемое количество = суммарный объём материала на все продукты в рецептуре.
+    </p>
+
+    @if (!Model.Products.Any())
+    {
+        <div class="aroma-empty">
+            <p class="aroma-empty__title">Этот материал не используется ни в одной рецептуре продукции.</p>
+        </div>
+    }
+    else
+    {
+        <div class="aroma-table-wrapper">
+            <table class="aroma-table">
+                <thead>
+                    <tr>
+                        <th>Артикул</th>
+                        <th>Наименование продукции</th>
+                        <th>Тип продукции</th>
+                        <th class="aroma-table__num">Необходимое количество</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var p in Model.Products)
+                    {
+                        <tr>
+                            <td><code>@p.ProductArticle</code></td>
+                            <td>@p.ProductName</td>
+                            <td class="aroma-table__muted">@p.ProductTypeName</td>
+                            <td class="aroma-table__num">@p.QuantityPerUnit.ToString("0.####") @p.MeasurementUnitShortName</td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="3" class="aroma-table__num aroma-table__total">Требуемое количество (всего):</td>
+                        <td class="aroma-table__num aroma-table__total">@Model.TotalRequired.ToString("0.##") @Model.MeasurementUnitShortName</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        <p class="aroma-section__hint">
+            Расчёт: Σ (Количество материала на единицу продукции) по всем продуктам, в рецептуре которых
+            участвует данный материал. Округление — 2 знака после запятой.
+        </p>
+    }
+</div>

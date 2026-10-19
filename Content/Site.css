@@ -1,0 +1,4 @@
+/* Site.css — базовые стили (минимальные). Основная тема в aromadom.css */
+body { margin: 0; padding: 0; }
+input[type="text"], input[type="number"], select, textarea { font-family: inherit; }
+code { font-family: Consolas, "Courier New", monospace; }

@@ -1,0 +1,695 @@
+/* =========================================================================
+   Арома Дом — Палитра (классическая пастельная, 4 цвета)
+   Шрифт: Georgia
+   Основной фон: #FFFFFF (белый)
+   Доп. фон (лавандовая дымка): #EFE8F7
+   Акцент (приглушённая лаванда): #7B6BA8
+   Вторичный (шалфей): #8FAA92
+   Опасность (пыльно-розовый): #D4867A
+   ========================================================================= */
+
+:root {
+  --aroma-bg: #FFFFFF;
+  --aroma-secondary: #EFE8F7;
+  --aroma-accent: #7B6BA8;
+  --aroma-accent-dark: #6B5A95;
+  --aroma-sage: #8FAA92;
+  --aroma-sage-dark: #7A9682;
+  --aroma-rose: #D4867A;
+  --aroma-rose-dark: #B96D61;
+  --aroma-text: #2D2438;
+  --aroma-muted: #7A6B8E;
+  --aroma-danger: #D4867A;
+  --aroma-success: #8FAA92;
+  --aroma-warning: #E0A75E;
+  --aroma-border: #DCD3E8;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--aroma-bg);
+  color: var(--aroma-text);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+/* ===== Layout: header / main / footer ===== */
+
+.aroma-header {
+  background-color: var(--aroma-secondary);
+  border-bottom: 2px solid var(--aroma-accent);
+}
+
+.aroma-header__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.aroma-logo {
+  height: 56px;
+  width: auto;
+}
+
+.aroma-nav {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.aroma-nav__link {
+  padding: 8px 14px;
+  background-color: transparent;
+  color: var(--aroma-accent);
+  text-decoration: none;
+  border: 1px solid var(--aroma-accent);
+  border-radius: 4px;
+  font-size: 14px;
+  transition: background-color 0.2s ease;
+}
+
+.aroma-nav__link:hover {
+  background-color: var(--aroma-accent);
+  color: #FFFFFF;
+}
+
+/* Шалфейный вариант ссылки навигации */
+.aroma-nav__link--sage {
+  color: var(--aroma-sage-dark);
+  border-color: var(--aroma-sage);
+}
+
+.aroma-nav__link--sage:hover {
+  background-color: var(--aroma-sage);
+  border-color: var(--aroma-sage);
+}
+
+.aroma-header__bar {
+  background-color: var(--aroma-accent);
+  color: #FFFFFF;
+  font-size: 13px;
+}
+
+.aroma-header__bar-inner,
+.aroma-header__bar > * {
+  display: inline-block;
+}
+
+.aroma-header__bar {
+  padding: 6px 24px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 12px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.aroma-main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+  min-height: calc(100vh - 200px);
+}
+
+.aroma-footer {
+  background-color: var(--aroma-secondary);
+  border-top: 1px solid var(--aroma-accent);
+  margin-top: 32px;
+}
+
+.aroma-footer__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 12px 24px;
+  font-size: 13px;
+  color: var(--aroma-muted);
+  text-align: center;
+}
+
+/* ===== Toast notifications ===== */
+
+.aroma-toast {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: 6px;
+  margin-bottom: 16px;
+  border: 1px solid;
+  animation: aroma-fade-in 0.2s ease-out;
+}
+
+.aroma-toast--success { background: #EAF2EC; border-color: var(--aroma-success); color: #4F6B55; }
+.aroma-toast--error   { background: #FAEAE7; border-color: var(--aroma-danger);  color: #8C4F44; }
+.aroma-toast--warning { background: #FBF1E0; border-color: var(--aroma-warning); color: #8C6A30; }
+
+.aroma-toast__title { font-weight: bold; }
+.aroma-toast__text  { flex: 1; color: var(--aroma-text); }
+.aroma-toast__close {
+  background: transparent;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  color: inherit;
+  padding: 0 6px;
+  line-height: 1;
+}
+
+@keyframes aroma-fade-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== Section title ===== */
+
+.aroma-section {
+  margin-bottom: 32px;
+}
+
+.aroma-section__title {
+  color: var(--aroma-accent);
+  font-size: 22px;
+  margin: 0 0 12px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.aroma-section__count {
+  color: var(--aroma-muted);
+  font-size: 16px;
+  font-weight: normal;
+}
+
+.aroma-section__subtitle {
+  color: var(--aroma-muted);
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+.aroma-section__hint {
+  color: var(--aroma-muted);
+  font-size: 13px;
+  font-style: italic;
+  margin-top: 8px;
+}
+
+/* ===== Toolbar ===== */
+
+.aroma-toolbar {
+  background-color: var(--aroma-secondary);
+  border: 1px solid var(--aroma-accent);
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 24px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 16px;
+  justify-content: space-between;
+}
+
+.aroma-toolbar__form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 12px;
+  flex: 1;
+}
+
+/* ===== Form fields ===== */
+
+.aroma-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.aroma-field--full { flex-basis: 100%; }
+
+.aroma-field__label {
+  font-size: 14px;
+  color: var(--aroma-text);
+  font-weight: bold;
+}
+
+.aroma-req {
+  color: var(--aroma-danger);
+}
+
+.aroma-input,
+.aroma-select {
+  padding: 8px 12px;
+  border: 1px solid var(--aroma-accent);
+  border-radius: 4px;
+  background-color: #FFFFFF;
+  font-family: inherit;
+  font-size: 14px;
+  min-height: 36px;
+  min-width: 200px;
+}
+
+.aroma-input:focus,
+.aroma-select:focus {
+  outline: 2px solid var(--aroma-accent);
+  outline-offset: 1px;
+}
+
+textarea.aroma-input {
+  min-height: 60px;
+  resize: vertical;
+}
+
+.aroma-field__error {
+  color: var(--aroma-danger);
+  font-size: 12px;
+  margin-top: 2px;
+}
+
+/* ===== Buttons ===== */
+
+.aroma-btn {
+  display: inline-block;
+  padding: 8px 18px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: bold;
+  border: 1px solid;
+  border-radius: 4px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  min-height: 36px;
+  line-height: 1.4;
+}
+
+.aroma-btn--primary {
+  background-color: var(--aroma-accent);
+  color: #FFFFFF;
+  border-color: var(--aroma-accent);
+}
+
+.aroma-btn--primary:hover {
+  background-color: var(--aroma-accent-dark);
+  border-color: var(--aroma-accent-dark);
+}
+
+.aroma-btn--secondary {
+  background-color: var(--aroma-secondary);
+  color: var(--aroma-accent-dark);
+  border-color: var(--aroma-accent);
+}
+
+.aroma-btn--secondary:hover {
+  background-color: #E3D7F0;
+}
+
+/* Шалфейная кнопка — для просмотра продукции, info-действий */
+.aroma-btn--sage {
+  background-color: var(--aroma-sage);
+  color: #FFFFFF;
+  border-color: var(--aroma-sage);
+}
+
+.aroma-btn--sage:hover {
+  background-color: var(--aroma-sage-dark);
+  border-color: var(--aroma-sage-dark);
+}
+
+.aroma-btn--danger {
+  background-color: transparent;
+  color: var(--aroma-danger);
+  border-color: var(--aroma-danger);
+}
+
+.aroma-btn--danger:hover {
+  background-color: var(--aroma-danger);
+  color: #FFFFFF;
+}
+
+.aroma-btn--danger[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.aroma-btn--small {
+  padding: 4px 10px;
+  font-size: 12px;
+  min-height: 28px;
+}
+
+/* ===== Cards (list of materials) ===== */
+
+.aroma-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px;
+}
+
+.aroma-card {
+  background-color: #FFFFFF;
+  border: 1px solid rgba(123, 107, 168, 0.4);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.aroma-card:hover {
+  box-shadow: 0 8px 24px -10px rgba(123, 107, 168, 0.35);
+  border-color: var(--aroma-accent);
+}
+
+.aroma-card--warning {
+  border-color: var(--aroma-rose);
+}
+
+.aroma-card--error {
+  border-color: var(--aroma-danger);
+  padding: 24px;
+}
+
+.aroma-card__header {
+  padding: 12px 16px 8px;
+  border-bottom: 1px solid rgba(123, 107, 168, 0.2);
+  background-color: rgba(239, 232, 247, 0.4);
+  border-radius: 8px 8px 0 0;
+  position: relative;
+}
+
+.aroma-card__type {
+  display: inline-block;
+  padding: 2px 8px;
+  background-color: var(--aroma-secondary);
+  color: var(--aroma-accent);
+  border: 1px solid var(--aroma-accent);
+  border-radius: 4px;
+  font-size: 12px;
+  margin-bottom: 8px;
+}
+
+.aroma-card__name {
+  margin: 0;
+  font-size: 17px;
+  color: var(--aroma-text);
+  line-height: 1.25;
+}
+
+.aroma-card__badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: bold;
+}
+
+.aroma-card__badge--danger {
+  background-color: rgba(212, 134, 122, 0.18);
+  color: #8C4F44;
+  border: 1px solid var(--aroma-rose);
+}
+
+.aroma-card__body {
+  padding: 12px 16px;
+  font-size: 14px;
+}
+
+.aroma-card__row {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 4px 0;
+}
+
+.aroma-card__row-label {
+  color: var(--aroma-muted);
+}
+
+.aroma-card__row-value {
+  font-weight: bold;
+  text-align: right;
+}
+
+.aroma-card__row-value--danger {
+  color: var(--aroma-danger);
+}
+
+.aroma-card__row--highlight {
+  background-color: rgba(239, 232, 247, 0.6);
+  margin: 0 -16px;
+  padding: 6px 16px;
+  border-radius: 4px;
+}
+
+.aroma-card__row--highlight .aroma-card__row-label,
+.aroma-card__row--highlight .aroma-card__row-value {
+  color: var(--aroma-accent);
+}
+
+.aroma-card__sep {
+  border: 0;
+  border-top: 1px solid rgba(123, 107, 168, 0.2);
+  margin: 8px 0;
+}
+
+.aroma-card__footer {
+  padding: 8px 16px 16px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.aroma-card__footer .aroma-btn {
+  flex: 1;
+  text-align: center;
+  min-width: 0;
+}
+
+/* ===== Form layout ===== */
+
+.aroma-form {
+  background-color: #FFFFFF;
+  border: 1px solid var(--aroma-accent);
+  border-radius: 8px;
+  padding: 24px;
+  max-width: 800px;
+}
+
+.aroma-form__title {
+  color: var(--aroma-accent);
+  margin: 0 0 8px;
+  font-size: 22px;
+}
+
+.aroma-form__title--danger {
+  color: var(--aroma-danger);
+}
+
+.aroma-form__subtitle {
+  color: var(--aroma-muted);
+  font-size: 14px;
+  margin-bottom: 24px;
+}
+
+.aroma-form__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.aroma-form__grid .aroma-field--full {
+  grid-column: 1 / -1;
+}
+
+.aroma-form__actions {
+  margin-top: 24px;
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+.aroma-form__errors {
+  background-color: rgba(212, 134, 122, 0.08);
+  border: 1px solid var(--aroma-danger);
+  color: #8C4F44;
+  padding: 12px 16px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+  list-style: none;
+}
+
+.aroma-form__errors ul {
+  list-style: disc;
+  padding-left: 20px;
+  margin: 4px 0;
+}
+
+/* ===== Links ===== */
+
+.aroma-link {
+  color: var(--aroma-accent);
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.aroma-link:hover {
+  text-decoration: underline;
+}
+
+.aroma-link--back {
+  display: inline-block;
+  margin-bottom: 16px;
+}
+
+/* ===== Empty state ===== */
+
+.aroma-empty {
+  text-align: center;
+  padding: 48px 16px;
+  background-color: var(--aroma-secondary);
+  border: 1px solid var(--aroma-accent);
+  border-radius: 8px;
+}
+
+.aroma-empty__title {
+  font-size: 18px;
+  color: var(--aroma-accent);
+  margin: 0 0 8px;
+}
+
+.aroma-empty__text {
+  color: var(--aroma-muted);
+  margin-bottom: 16px;
+}
+
+/* ===== Tables ===== */
+
+.aroma-table-wrapper {
+  overflow-x: auto;
+  border: 1px solid var(--aroma-accent);
+  border-radius: 8px;
+}
+
+.aroma-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.aroma-table th,
+.aroma-table td {
+  padding: 10px 12px;
+  text-align: left;
+  border-bottom: 1px solid rgba(123, 107, 168, 0.2);
+}
+
+.aroma-table th {
+  background-color: var(--aroma-secondary);
+  color: var(--aroma-accent);
+  font-weight: bold;
+}
+
+.aroma-table tbody tr:hover {
+  background-color: rgba(239, 232, 247, 0.3);
+}
+
+.aroma-table__num { text-align: right; }
+.aroma-table__muted { color: var(--aroma-muted); }
+.aroma-table__total {
+  background-color: var(--aroma-secondary);
+  border-top: 2px solid var(--aroma-accent);
+  color: var(--aroma-accent);
+  font-weight: bold;
+}
+
+/* ===== Calculator result ===== */
+
+.aroma-calc-result {
+  margin-top: 24px;
+  padding: 20px;
+  border: 1px solid var(--aroma-accent);
+  background-color: var(--aroma-secondary);
+  border-radius: 8px;
+}
+
+.aroma-calc-result--error {
+  background-color: rgba(212, 134, 122, 0.1);
+  border-color: var(--aroma-danger);
+  color: #8C4F44;
+}
+
+.aroma-calc-result__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.aroma-calc-result__label {
+  font-size: 14px;
+  opacity: 0.85;
+}
+
+.aroma-calc-result__value {
+  font-size: 36px;
+  font-weight: bold;
+}
+
+.aroma-calc-result__message {
+  margin: 8px 0;
+  font-size: 14px;
+}
+
+.aroma-calc-result__details {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px 16px;
+  font-size: 13px;
+}
+
+.aroma-calc-result__details div {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px dotted var(--aroma-border);
+  padding: 4px 0;
+}
+
+/* ===== Warning block ===== */
+
+.aroma-warning {
+  background-color: rgba(224, 167, 94, 0.08);
+  border: 1px solid var(--aroma-warning);
+  border-left: 4px solid var(--aroma-warning);
+  padding: 12px 16px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+}
+
+.aroma-warning__danger {
+  color: #8C4F44;
+  font-weight: bold;
+}
+
+/* ===== Responsive ===== */
+
+@media (max-width: 640px) {
+  .aroma-form__grid { grid-template-columns: 1fr; }
+  .aroma-header__inner { flex-direction: column; gap: 12px; }
+  .aroma-nav { justify-content: center; }
+  .aroma-calc-result__header { flex-direction: column; gap: 4px; align-items: flex-start; }
+  .aroma-calc-result__details { grid-template-columns: 1fr; }
+}

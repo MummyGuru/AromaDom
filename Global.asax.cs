@@ -1,0 +1,19 @@
+using AromaDom.App_Start;
+using System.Web.Mvc;
+using System.Web.Routing;
+
+namespace AromaDom
+{
+    /// <summary>
+    /// Точка входа приложения. Регистрирует фильтры и маршруты.
+    /// </summary>
+    public class MvcApplication : System.Web.HttpApplication
+    {
+        protected void Application_Start()
+        {
+            AreaRegistration.RegisterAllAreas();
+            FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
+            RouteConfig.RegisterRoutes(RouteTable.Routes);
+        }
+    }
+}

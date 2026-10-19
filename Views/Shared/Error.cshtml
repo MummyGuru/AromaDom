@@ -1,0 +1,10 @@
+@{
+    ViewBag.Title = "Ошибка приложения";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="aroma-card aroma-card--error">
+    <h2 class="aroma-card__title">Произошла ошибка</h2>
+    <p class="aroma-card__text">@ViewBag.ErrorMessage</p>
+    <a href="@Url.Action("Index", "Materials")" class="aroma-btn aroma-btn--secondary">На главную</a>
+</div>

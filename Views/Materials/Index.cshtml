@@ -1,0 +1,93 @@
+﻿@model IEnumerable<AromaDom.Models.ViewModels.MaterialCardViewModel>
+@{
+    ViewBag.Title = "Список материалов — Арома Дом";
+    var materialTypes = ViewBag.MaterialTypes as List<AromaDom.Models.Entities.MaterialType>;
+}
+
+<div class="aroma-section">
+    <h2 class="aroma-section__title">Материалы
+        <span class="aroma-section__count">(@Model.Count() шт.)</span>
+    </h2>
+
+    @* Панель управления: поиск, фильтр, кнопка «Добавить» *@
+    <div class="aroma-toolbar">
+        @using (Html.BeginForm("Index", "Materials", FormMethod.Get, new { @class = "aroma-toolbar__form" }))
+        {
+            <div class="aroma-field">
+                <label for="search" class="aroma-field__label">Поиск по наименованию</label>
+                <input type="text" id="search" name="search" value="@ViewBag.Search" placeholder="Например, соевый воск..." class="aroma-input" />
+            </div>
+            <div class="aroma-field">
+                <label for="typeId" class="aroma-field__label">Фильтр по типу</label>
+                <select id="typeId" name="typeId" class="aroma-select">
+                    <option value="">Все типы</option>
+                    @if (materialTypes != null)
+                    {
+                        foreach (var t in materialTypes)
+                        {
+                            <option value="@t.Id" @(ViewBag.TypeId != null && (int)ViewBag.TypeId == t.Id ? "selected" : "")>@t.Name</option>
+                        }
+                    }
+                </select>
+            </div>
+            <button type="submit" class="aroma-btn aroma-btn--secondary">Применить фильтр</button>
+        }
+        <a href="@Url.Action("Create", "Materials")" class="aroma-btn aroma-btn--primary">
+            Добавить материал
+        </a>
+    </div>
+
+    @* Список материалов в карточном виде (по макету из задания) *@
+    @if (!Model.Any())
+    {
+        <div class="aroma-empty">
+            <p class="aroma-empty__title">Материалы не найдены</p>
+            <p class="aroma-empty__text">Измените условия поиска или добавьте новый материал.</p>
+            <a href="@Url.Action("Create", "Materials")" class="aroma-btn aroma-btn--primary">Добавить материал</a>
+        </div>
+    }
+    else
+    {
+        <div class="aroma-cards">
+            @foreach (var m in Model)
+            {
+                <article class="aroma-card @(m.LowStock ? "aroma-card--warning" : "")">
+                    <header class="aroma-card__header">
+                        <span class="aroma-card__type">@m.MaterialTypeName</span>
+                        <h3 class="aroma-card__name">@m.Name</h3>
+                        @if (m.LowStock)
+                        {
+                            <span class="aroma-card__badge aroma-card__badge--danger">Мало</span>
+                        }
+                    </header>
+
+                    <div class="aroma-card__body">
+                        <div class="aroma-card__row">
+                            <span class="aroma-card__row-label">Минимальное количество:</span>
+                            <span class="aroma-card__row-value">@m.MinStockQuantity.ToString("0.###") @m.MeasurementUnitShortName</span>
+                        </div>
+                        <div class="aroma-card__row">
+                            <span class="aroma-card__row-label">Количество на складе:</span>
+                            <span class="aroma-card__row-value @(m.LowStock ? "aroma-card__row-value--danger" : "")">@m.StockQuantity.ToString("0.###") @m.MeasurementUnitShortName</span>
+                        </div>
+                        <div class="aroma-card__row">
+                            <span class="aroma-card__row-label">Цена:</span>
+                            <span class="aroma-card__row-value">@m.Cost.ToString("0.00") р / @m.MeasurementUnitShortName</span>
+                        </div>
+                        <hr class="aroma-card__sep" />
+                        <div class="aroma-card__row aroma-card__row--highlight">
+                            <span class="aroma-card__row-label">Требуемое количество:</span>
+                            <span class="aroma-card__row-value">@m.RequiredQuantity.ToString("0.##") @m.MeasurementUnitShortName</span>
+                        </div>
+                    </div>
+
+                    <footer class="aroma-card__footer">
+                        <a href="@Url.Action("Products", "Materials", new { id = m.Id })" class="aroma-btn aroma-btn--sage aroma-btn--small">Продукция</a>
+                        <a href="@Url.Action("Edit", "Materials", new { id = m.Id })" class="aroma-btn aroma-btn--secondary aroma-btn--small">Редактировать</a>
+                        <a href="@Url.Action("Delete", "Materials", new { id = m.Id })" class="aroma-btn aroma-btn--danger aroma-btn--small">Удалить</a>
+                    </footer>
+                </article>
+            }
+        </div>
+    }
+</div>
